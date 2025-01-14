@@ -1,0 +1,10 @@
+*.log
+
+/*.json
+/*.tf
+*.tfstate
+/*.tfstate.backup
+/_output
+/.terraform
+/bin
+/terraform-provider-span

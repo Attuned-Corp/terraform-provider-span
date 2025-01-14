@@ -1,0 +1,31 @@
+---
+deadline: 5m
+
+linters-settings:
+  errcheck:
+    exclude-functions:
+  misspell:
+    locale: US
+
+linters:
+  disable-all: true
+  enable:
+    - gofmt
+    - bodyclose
+    - copyloopvar
+    - errcheck
+    - gocritic
+    - goimports
+    - gosimple
+    - govet
+    - ineffassign
+    - misspell
+    - prealloc
+    - revive
+    - rowserrcheck
+    - staticcheck
+    - typecheck
+    - unparam
+    - unused
+    - unconvert
+    - whitespace
