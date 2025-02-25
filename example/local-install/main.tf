@@ -123,3 +123,22 @@ provider "span" {
 #         },
 #     ]
 # }
+
+# span_team_manifest loads the manifest for a specific team by team id
+#
+# data "span_team_manifest" "core_team_manifest" {
+#   team_id = "<team_id>"
+# }
+#
+# ## Example output:
+# core_team_manifest = {
+#  "reference" = "@span/core-team"
+#  "team_id" = "6d427a01-9c0a-4ec5-bdd0-a0c364c42baf"
+#  "team_name" = "Core Team"
+#  "tech_lead" = "core-lead@span.app"
+#  "vendors" = {
+#    "datadog" = {
+#      "slug" = "span-core"
+#    }
+#  }
+#}
