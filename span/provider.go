@@ -127,6 +127,7 @@ func (p *spanProvider) DataSources(_ context.Context) []func() datasource.DataSo
 		NewPeopleDataSource,
 		NewTeamDataSource,
 		NewTeamsDataSource,
+		NewTeamManifestDataSource,
 	}
 }
 

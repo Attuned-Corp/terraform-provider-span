@@ -12,6 +12,7 @@ type SpanAPIClient interface {
 	FindPeople(r FindPeopleRequest) ([]PersonWithTeam, error)
 	FindTeams(r FindTeamsRequest) ([]Team, error)
 	FindTeamByID(teamID string) (*TeamWithMembers, error)
+	FindTeamManifestByTeamID(teamID string) (*TeamManifest, error)
 }
 
 type client struct {
@@ -77,6 +78,29 @@ func (c *client) FindTeamByID(teamID string) (*TeamWithMembers, error) {
 	}
 
 	return &resp.Data, nil
+}
+
+func (c *client) FindTeamManifestByTeamID(teamID string) (*TeamManifest, error) {
+	var resp FindTeamManifestResponse
+
+	err := c.httpClient.Get("/catalog/teams/{teamID}/manifest").
+		SetPathParam("teamID", teamID).
+		Do().
+		Into(&resp)
+
+	if err != nil {
+		return nil, NewUnknownError()
+	}
+
+	var manifest *TeamManifest
+	for k, m := range resp.Data {
+		manifest = &m
+		manifest.TeamReference = k
+		manifest.TeamID = teamID
+	}
+
+	return manifest, nil
+
 }
 
 type clientOptions struct {

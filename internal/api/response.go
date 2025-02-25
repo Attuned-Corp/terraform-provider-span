@@ -33,6 +33,14 @@ type TeamWithMembers struct {
 	Members []TeamMember `json:"members"`
 }
 
+type TeamManifest struct {
+	TeamID        string
+	TeamName      string         `json:"pretty_name"`
+	TeamReference string         `json:"external_reference"`
+	TechLead      string         `json:"tech_lead"`
+	Vendors       map[string]any `json:"vendors"`
+}
+
 type Meta struct {
 }
 
@@ -53,4 +61,9 @@ type FindTeamsResponse struct {
 type FindTeamResponse struct {
 	ResponseWithMeta
 	Data TeamWithMembers `json:"data"`
+}
+
+type FindTeamManifestResponse struct {
+	ResponseWithMeta
+	Data map[string]TeamManifest `json:"data"`
 }
