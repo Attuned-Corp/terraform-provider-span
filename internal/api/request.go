@@ -8,3 +8,8 @@ type FindPeopleRequest struct {
 type FindTeamsRequest struct {
 	Name string
 }
+
+type SetTeamManifestRequest struct {
+	Reference string         `json:"externalReference"`
+	Vendors   map[string]any `json:"vendors"`
+}

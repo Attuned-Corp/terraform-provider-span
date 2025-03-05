@@ -23,7 +23,7 @@ type TeamManifestDataSource struct {
 	apiClient api.SpanAPIClient
 }
 
-type TeamManifestResourceData struct {
+type teamManifestDataSourceData struct {
 	TeamID    types.String  `tfsdk:"team_id"`
 	TeamName  types.String  `tfsdk:"team_name"`
 	Reference types.String  `tfsdk:"reference"`
@@ -31,8 +31,8 @@ type TeamManifestResourceData struct {
 	Vendors   types.Dynamic `tfsdk:"vendors"`
 }
 
-func newTeamManifestResourceData(_ context.Context, in *api.TeamManifest) (*TeamManifestResourceData, error) {
-	var data TeamManifestResourceData
+func newTeamManifestDataSourceData(_ context.Context, in *api.TeamManifest) (*teamManifestDataSourceData, error) {
+	var data teamManifestDataSourceData
 
 	data.TeamID = types.StringValue(in.TeamID)
 	data.TeamName = types.StringValue(in.TeamName)
@@ -46,16 +46,15 @@ func newTeamManifestResourceData(_ context.Context, in *api.TeamManifest) (*Team
 		return nil, err
 	}
 
-	data.Vendors, err = dynamic.DynamicFromJSON(vendorsInput)
+	data.Vendors, err = dynamic.FromJSON(vendorsInput)
 	if err != nil {
 		return nil, err
 	}
 
 	return &data, nil
-
 }
 
-func (tmr TeamManifestResourceData) Attributes() map[string]schema.Attribute {
+func (tmr teamManifestDataSourceData) Attributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
 		"team_id": schema.StringAttribute{
 			MarkdownDescription: "The team id owner for the manifest resource.",
@@ -87,7 +86,7 @@ func (d *TeamManifestDataSource) Metadata(_ context.Context, req datasource.Meta
 func (d *TeamManifestDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "A data source representation for manifest details stored for a team resource.",
-		Attributes:          TeamManifestResourceData{}.Attributes(),
+		Attributes:          teamManifestDataSourceData{}.Attributes(),
 	}
 }
 
@@ -109,7 +108,7 @@ func (d *TeamManifestDataSource) Configure(_ context.Context, req datasource.Con
 }
 
 func (d *TeamManifestDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data TeamManifestResourceData
+	var data teamManifestDataSourceData
 
 	// Read Terraform configuration data into the model
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
@@ -134,7 +133,7 @@ func (d *TeamManifestDataSource) Read(ctx context.Context, req datasource.ReadRe
 		return
 	}
 
-	resource, err := newTeamManifestResourceData(ctx, response)
+	resource, err := newTeamManifestDataSourceData(ctx, response)
 
 	if err != nil {
 		resp.Diagnostics.AddError("Could not load manifest", fmt.Sprintf("Schema mapping for manifiest failed with %v", err))
