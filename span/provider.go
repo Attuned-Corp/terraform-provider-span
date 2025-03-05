@@ -133,5 +133,7 @@ func (p *spanProvider) DataSources(_ context.Context) []func() datasource.DataSo
 
 // Resources returns a slice of functions to instantiate supported Resource implementations
 func (p *spanProvider) Resources(_ context.Context) []func() resource.Resource {
-	return nil
+	return []func() resource.Resource{
+		NewTeamManifestResource,
+	}
 }

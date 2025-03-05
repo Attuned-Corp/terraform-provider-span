@@ -73,8 +73,8 @@ func mapToJSON(b []byte) (attr.Type, attr.Value, error) {
 	}
 }
 
-// DynamicFromJSON maps serialized json string to TF dynamic type ad-hoc.
-func DynamicFromJSON(b []byte) (types.Dynamic, error) {
+// FromJSON maps serialized json string to TF dynamic type ad-hoc.
+func FromJSON(b []byte) (types.Dynamic, error) {
 	_, v, err := mapToJSON(b)
 	if err != nil {
 		return types.Dynamic{}, err

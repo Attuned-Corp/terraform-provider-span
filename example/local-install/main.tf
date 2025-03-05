@@ -142,3 +142,18 @@ provider "span" {
 #    }
 #  }
 #}
+
+# ===============
+# Resources:
+# ===============
+
+# span_team_manifest resource allows to create and update
+# enumerated properties for a team's manifest
+
+# resource "span_team_manifest" "core_team_manifest" {
+#   team_id = "6d427a01-9c0a-4ec5-bdd0-a0c364c42baf" # required
+#   reference = "@span/core-team" # required
+#   vendors_input = jsonencode({"pagerduty": {"schedule": "PI7DH85"}})
+#}
+
+# The output is equivalent to the data source schema.

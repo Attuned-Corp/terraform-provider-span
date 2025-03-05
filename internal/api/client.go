@@ -13,6 +13,8 @@ type SpanAPIClient interface {
 	FindTeams(r FindTeamsRequest) ([]Team, error)
 	FindTeamByID(teamID string) (*TeamWithMembers, error)
 	FindTeamManifestByTeamID(teamID string) (*TeamManifest, error)
+	SetTeamManifest(teamID string, r SetTeamManifestRequest) (*TeamManifest, error)
+	DeleteTeamManifest(teamID string) error
 }
 
 type client struct {
@@ -100,7 +102,37 @@ func (c *client) FindTeamManifestByTeamID(teamID string) (*TeamManifest, error) 
 	}
 
 	return manifest, nil
+}
 
+func (c *client) SetTeamManifest(teamID string, r SetTeamManifestRequest) (*TeamManifest, error) {
+	var resp FindTeamManifestResponse
+
+	err := c.httpClient.Post("/catalog/teams/{teamID}/manifest").
+		SetPathParam("teamID", teamID).SetBody(r).Do().Into(&resp)
+
+	if err != nil {
+		return nil, NewUnknownError()
+	}
+
+	var manifest *TeamManifest
+	for k, m := range resp.Data {
+		manifest = &m
+		manifest.TeamReference = k
+		manifest.TeamID = teamID
+	}
+
+	return manifest, nil
+}
+
+func (c *client) DeleteTeamManifest(teamID string) error {
+	err := c.httpClient.Delete("/catalog/teams/{teamID}/manifest").
+		SetPathParam("teamID", teamID).
+		Do().ErrorResult()
+
+	if err != nil {
+		return NewUnknownError()
+	}
+	return nil
 }
 
 type clientOptions struct {
